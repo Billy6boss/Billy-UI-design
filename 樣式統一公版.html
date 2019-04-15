@@ -1,0 +1,544 @@
+<html>
+<head>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link href="css/clubstyle.css" rel="stylesheet">
+    <script src="js/jquery-1.10.2.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link type="text/css" rel="stylesheet" href="css/cmxform.css" media="screen">
+
+    <link type="text/css" rel="stylesheet" href="css/menustyle.css">    
+    <link type="text/css" rel="stylesheet" href="css/FixedTable.css">
+
+    <script type="text/javascript" src="js/My97DatePicker/WdatePicker.js"></script><link href="js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.js"></script>
+    <!--<script type="text/javascript" src="js/default.js"></script>  -->
+    <script type="text/javascript" src="js/menu_jquery.js"></script>
+</head>
+<body data-gr-c-s-loaded="true" style=""><div id="portal_header">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+    #main_header{
+        width:100%;
+        border-width: 1px;
+        border-bottom-style: solid ;
+        border-bottom-color: gray;
+    }
+
+    #main_header ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        /*background-color: #dddddd;*/
+        font-family:"微軟正黑體", Arial, Helvetica, sans-serif !important;
+        padding-left:10px;
+        letter-spacing: 2.5px; /*字間距*/
+    }
+
+    #main_header li {
+        float: left;
+        display: block;
+        padding: 5px;
+    }
+
+    #main_header a {
+        text-decoration: none;
+    }
+    #main_header .header_menu:hover {
+        background-color:#d9d9d9;
+    }
+
+    #main_header .main_title{
+        color:#777777;
+        font-weight:bold !important; 
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    #main_header .main_info{
+        color:#777777;
+        font-size:12px;
+    }
+</style>
+<!-- <img src="/PortalHeader?img='Y'" width="25" height="25" alt=""> -->
+<div id="main_header" style="background-color:white;">
+    <div class="nav">
+        <ul>
+            <li class="main_title"><img src="/img/Logo1.png" width="25" height="25" alt=""><strong>  國教署  高中職校務行政系統</strong></li>
+            <li class="header_menu"><a href="/Login" style="color:green;"><i style="font-size:24px" class="fa"></i><strong>回資訊系統首頁</strong></a></li>
+            <li class="header_menu"><a href="/Logout" style="color:green;"><i style="font-size:24px" class="fa"></i>登出系統</a></li>
+        </ul>
+    </div>
+    <div class="nav">
+        <ul>
+            <li class="main_info" style="color:gray;"><strong><i style="font-size:10px" class="fa"></i>通客服專線：</strong><span class="text-primary">(02)2771-2171分機3290或3296</span> | </li>
+            <li class="main_info" style="color:gray;"><strong><i style="font-size:10px" class="fa"></i>服務信箱：</strong><span class="text-primary">hsa_service@ntut.edu.tw</span> | </li>
+            <li class="main_info" style="color:gray;"><strong><i style="font-size:10px" class="fa"></i>服務時間：</strong><span class="text-primary">上班日 上午09:00~12:00 下午13:30~17:00</span> | </li>
+            <li class="main_info" style="color:gray;"><small><i style="font-size:10px" class="fa"></i>DESKTOP-HUSO7GG</small></li>
+        </ul>
+    </div>
+    <div class="nav">
+    </div>
+</div>
+</div>
+<title>社團管理</title>
+<script>
+    $(function() {
+        function setYearAndSem(event) {
+            $.ajax({
+                url : 'ClubMgt',
+                type : 'post',
+                data : {
+                    'sbj_year' : $('select[name=sbj_year]').val(),
+                    'sbj_sem' : $('select[name=sbj_sem]').val(),
+                    'op' : 'set'
+                },
+                dataType : 'text',
+                error : function(data) {
+                    alert('設定學年學期時發生ajax error：' + data);
+                },
+                success : function(data) {
+
+                }
+            });
+        }
+        function doDelete(event) {
+            if (confirm('確認刪除?')) {
+                var target = $(this).parents('li');
+                var club_num = target.find('input[name=club_num]').val();
+                $.ajax({
+                    url : 'ClubMgt',
+                    type : 'post',
+                    data : {
+                        'club_num' : club_num,
+                        'op' : 'delete'
+                    },
+                    dataType : 'text',
+                    error : function(data) {
+                        alert('刪除時發生ajax error：' + data);
+                    },
+                    success : function(data) {
+                        alert(data);
+                        if (data === '刪除成功') {
+                            target.remove();
+                        }
+                    }
+                });
+            }
+        }
+        function doSubmit(event) {
+            $(this).parents('li').find('form[action=ClubMgt]').submit();
+        }
+        $('input[name=delete]').click(doDelete);
+        $('a.namelink').click(doSubmit);
+        $('select[name^=sbj]').change(setYearAndSem);
+    });</script>
+    <div id="outer">
+
+        <div id="portal_header"></div>
+        <div id="banner">
+            <div id="slider">
+                <img src="images/banner02.png" width="1200" height="90" alt="">
+            </div>
+        </div>  
+        <div id="main">       
+            <div align="left">
+                <!--menu -->
+                <style>
+                .thisclub{
+                    background: linear-gradient(to left, #99ccff 0%, #ffffff 71%);
+                    width: 235px;
+                }
+                .thisclub p{
+                    @import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+                    font-family: "cwTeXYen", sans-serif;
+                    font-size: 30px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin-bottom: 0;
+                    margin-top:5px;
+                }
+            </style>
+            <div id="cssmenu">
+                <ul id="nav">
+                    <li><a id="Main" href="Main"><span>學務系統首頁</span></a></li>
+                    <li><a id="ClubMgt" href="ClubMgt"><span>社團系統首頁</span></a></li>
+                    <li class="has-sub"><a href="#" id="ClubSeletionLi" onclick="menujs('ClubSeletionLi')"><span>線上選社</span></a>
+                        <ul>
+                            <li><a id="ClubSelectionLi" href="ClubSelection"><span>線上選社</span></a></li> 
+                        </ul>
+                    </li>
+                    <li class="has-sub"><a href="#" id="ClubManagementLi" onclick="menujs('ClubManagementLi')"><span>社團管理</span></a>
+                        <ul>
+                            <li><a id="ClubAddLi" href="ClubAdd"><span>新增社團</span></a></li> 
+                            <li><a id="ClubSelectionMethodLi" href="ClubSelectionMethod"><span>線上選社設定</span></a></li> 
+                            <li><a id="ClubCopyLi" href="ClubCopy"><span>學期社團複製</span></a></li> 
+                        </ul>
+                    </li>
+                    <li class="has-sub"><a href="#" id="ClubExportLi" onclick="menujs('ClubExportLi')"><span>社團報表列印</span></a>
+                        <ul>
+                            <li><a id="ClubExportLi" href="ClubExport"><span>社團報表列印</span></a></li> 
+                        </ul>
+                    </li>
+                    <li class="has-sub"><a href="#" id="ClubActivityLi" onclick="menujs('ClubActivityLi')"><span>社團活動</span></a>
+                        <ul>
+                            <li><a id="ClubActAppLi" href="ClubActApp"><span>社團活動申請</span></a></li> 
+                            <li><a id="ClubActReportLi" href="ClubActReport"><span>社團活動報告</span></a></li> 
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--menu END-->
+        </div>      
+        <div id="content">                                      
+            <div id="box2">
+                <!-- 社團Banner -->
+                <div class="clubbanner">
+                    <c:if test="${not empty club.img_url}">
+                    <div class="bgimg"
+                    style="background: url('${pageContext.request.contextPath}${club.img_url}') no-repeat center;"></div>
+                </c:if>
+                <div class="semtime">
+                    <select name="sbj_year" required>
+                        <c:forEach begin="103" end="${ud.sbj_year}" var="i">
+                        <option value="${i}"
+                        ${i == (club.sbj_year != null ? club.sbj_year : ud.sbj_year) ? 'selected' : ''}>${i}年</option>
+                    </c:forEach>
+                </select> / <select name="sbj_sem" required>
+                    <option value="1"
+                    ${(club.sbj_sem != null ? club.sbj_sem : ud.sbj_sem) == '1' ? 'selected' : ''}>上學期</option>
+                    <option value="2"
+                    ${(club.sbj_sem != null ? club.sbj_sem : ud.sbj_sem) == '2' ? 'selected' : ''}>下學期</option>
+                </select> 
+            </div>
+            <div class="clubname">
+                <input type="text" name="club_name" value="${club.club_name}"
+                required /> 
+            </div>
+            <div class="clubcat">
+                <select name="cat_no" required>
+                    <c:forEach items="${categories}" var="item">
+                    <option value="${item.cat_no}"
+                    ${club.cat_no == item.cat_no ? 'selected' : ''}>${item.cat_name}</option>
+                </c:forEach>
+            </select> 
+        </div>
+        <div>
+            <label class="filebtn"><input type="file" name="img" accept="image/*" />更新圖片</label>
+        </div>
+    </div>
+    <!-- 水平Table -->
+    <div class="tab linear">Text tab</div>
+    <div class="hortable">
+        <table>
+            <tr>
+                <td>Input text:</td>
+                <td><input class="fullsize" type="text"></td>
+            </tr>
+            <tr>
+                <td>Input number 3dige</td>
+                <td><input class="threedige" type="number" value="1234"></td>
+            </tr>
+            <tr>
+                <td>Selettion</td>
+                <td>
+                    <select name="" id="">
+                        <option value="0">一二三四</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>CheckBox</td>
+                <td>
+                    <input type="checkbox">選項一
+                    <input type="checkbox">選項二
+                    <input type="checkbox">選項三
+                    <input type="checkbox">選項四
+                </td>
+            </tr>
+            <tr>
+                <td>RaidioButton</td>
+                <td>
+                    <input type="radio">是
+                    <input type="radio">否
+                </td>
+            </tr>
+        </table>
+        <div class="tab linear">Text tab</div>
+        <table>
+            <tr>
+                <td>Input text:</td>
+                <td><input type="text"></td>
+                <td>Input number</td>
+                <td><input type="number"></td>
+            </tr>
+            <tr>
+                <td>Selettion</td>
+                <td>
+                    <select name="" id="">
+                        <option value="0">一二三四</option>
+                    </select>
+                </td>
+                <td>CheckBox</td>
+                <td>
+                    <input type="checkbox">選項一
+                    <input type="checkbox">選項二
+                    <input type="checkbox">選項三
+                    <input type="checkbox">選項四
+                </td>
+            </tr>
+            <tr>
+                <td>姓名</td>
+                <td><input id="CName" type="text" value="一二三四五"></td>
+                <td>學號</td>
+                <td><input id="reg_no" type="text" value="123456789"></td>
+            </tr>
+            <tr>
+                <td>RaidioButton</td>
+                <td colspan="3">
+                    <input type="radio">是
+                    <input type="radio">否
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- 主要Table-->
+    <div class="tab radiusborder">Result</div>
+    <div class="resulttable">
+        <table>
+            <thead>
+                <tr>
+                    <th>一二三四五</th>
+                    <th>一二三四</th>
+                    <th>一二三</th>
+                    <th>一</th>
+                    <th>圖</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>輸入資料</td>
+                    <td>
+                        <select name="" id="">
+                            <option value="">一二</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                    <td><input type="number"></td>
+                    <td><button>按鈕</button></td>
+                </tr>                
+                <tr>
+                    <td>輸入資料</td>
+                    <td>
+                        <select name="" id="">
+                            <option value="">一二</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                    <td><input type="number"></td>
+                    <td><button>按鈕</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab radiusborder">Result</div>
+    <div class="resulttable bluetheme">
+        <table>
+            <thead>
+                <tr>
+                    <th>一二三四五</th>
+                    <th>一二三四</th>
+                    <th>一二三</th>
+                    <th>一</th>
+                    <th>圖</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>輸入資料</td>
+                    <td>
+                        <select name="" id="">
+                            <option value="">一二</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                    <td><input type="number"></td>
+                    <td><button>按鈕</button></td>
+                </tr>                
+                <tr>
+                    <td>輸入資料</td>
+                    <td>
+                        <select name="" id="">
+                            <option value="">一二</option>
+                        </select>
+                    </td>
+                    <td><input type="text"></td>
+                    <td><input type="number"></td>
+                    <td><button>按鈕</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 搜尋 -->
+    <div class="tab radiusborder bluetheme">Search</div>
+    <div id="search" class="bluetheme">
+        <div class="hortable bluetheme">
+            <table>
+                <tr>
+                    <td>姓名：</td>
+                    <td><input type="text"></td>
+                    <td>學號：</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>服務日期：</td>
+                    <td><input type="date"><input type="date"></td>
+                    <td>服務時數：</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>服務事項</td>
+                    <td colspan="3"><input type="text"></td>
+                </tr>
+            </table>
+            <div class="btngroup">
+                <input type="submit" class="savebtn" value="儲存">
+            </div>
+        </div>
+    </div>
+    <div class="listtable inlinedisplay yellowtheme"> 
+        <div class="tab fullsize yellowtheme">Full Size</div>
+        <ul class="">
+            <li>linedisplay</li>
+            <li>tab fullsize</li>
+            <li>Not bluetheme</li>
+            <li>Item</li>
+            <li>Now if don't have a walker</li>
+        </ul>
+    </div>
+
+    <div class="bigtable">
+        <table>
+            <thead>
+                <tr>
+                    <th>選擇</th>
+                    <th>項次</th>
+                    <th>時間</th>
+                    <th>詳細地點</th>
+                    <th>說明事項與其他註解</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>1</td>
+                    <td>97/09/11-01:00  </td>
+                    <td>一二三四五六七八九</td>
+                    <td>無</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>1</td>
+                    <td>97/09/11-01:00  </td>
+                    <td>一二三四五六七八九</td>
+                    <td>無</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>1</td>
+                    <td>97/09/11-01:00  </td>
+                    <td>一二三四五六七八九</td>
+                    <td>無</td>
+                </tr>
+                <tr>
+                    <td><input id="custom" type="checkbox" class="customckbox"><label for="custom"></label></td>
+                    <td>1</td>
+                    <td>97/09/11-01:00  </td>
+                    <td>一二三四五六七八九</td>
+                    <td>無</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="tab nomal">Tab Nomal</div>
+    <div class="tabcontent">
+        tabcontent
+        <ul>
+            <li>list 1</li>
+            <li>list 2</li>
+            <li>list 3</li>
+            <li>list 4</li>
+            <li>list 5</li>
+        </ul>
+    </div>
+    
+    <div class="tab fadeout">Tab Fadeout</div>
+
+    <div class="tab divbordertop">Tab Divbordertop</div>
+    <div class="divbordertop formtable">
+        <div class="formgrop">
+            <label>Formgrop input</label>
+            <input type="text" class="">
+        </div>
+        <div class="formgrop">
+            <label>Formgrop input</label>
+            <select class="">
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+                <option value="">4</option>
+                <option value="">5</option>
+            </select>
+        </div>
+        <div>
+            <label>Form-control</label>
+            <input type="checkbox">
+        </div>
+    </div>
+    <fieldset>
+        <legend>fieldset</legend>
+            <ol>
+                <li>Just fieldset defule style1</li>
+                <li>Just fieldset defule style2</li>
+                <li>Just fieldset defule style3</li>
+                <li>Just fieldset defule style4</li>
+                <li>Just fieldset defule style5</li>
+            </ol>
+    </fieldset>
+
+    <div class="btngroup">
+        <button class="savebtn">確認更新</button>
+        <button class="savebtn mytooltip">Tooltip
+            <span class="mytooltiptext">GOOD</span>
+        </button>
+        <input  class="cancelbtn" type="submit" value="取消">
+        <button class="primarybtn icon"><i class="fa fa-gear"></i></button>
+        <button class="savebtn mini"><i class="fa fa-gear"></i></button>
+        <input  class="cancelbtn mini" type="button" value="微小">
+    </div>
+</div>
+<!-- end id=box2 -->
+<br class="clear">
+</div>
+<!-- end id=content -->
+<br class="clear">
+</div>
+<!-- end id=main -->
+</div> 
+</body>
+</html>
